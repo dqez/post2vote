@@ -45,6 +45,18 @@
                             @{
                                 var currentUser = ViewBag.CurrentUser as votegdgc.Models.User;
                                 var votesLeft = currentUser?.RemainingVotes ?? 0;
+
+
+                                // KIỂM TRA AVATAR:
+                                // Nếu currentUser tồn tại VÀ có AvatarUrl -> Dùng AvatarUrl
+                                // Ngược lại -> Dùng ảnh mặc định của bạn
+                                var avatarSrc = !string.IsNullOrEmpty(currentUser?.AvatarUrl) 
+                                    ? currentUser.AvatarUrl 
+                                    : "../assets/GDSC_Icon.665f1462ba5cded266fc.png";
+                            
+                                // Lấy tên user để đưa vào thẻ alt (tốt cho SEO/Accessibility)
+                                var altText = currentUser?.Name ?? "User";
+
                             }
                             <span class="text-lg font-black leading-none text-gdg-red">@votesLeft</span>
                         </div>
@@ -55,7 +67,9 @@
                                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-log-out w-5 h-5"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path><polyline points="16 17 21 12 16 7"></polyline><line x1="21" x2="9" y1="12" y2="12"></line></svg>
                             </button>
                         </form>
-                        <img src="../assets/GDSC_Icon.665f1462ba5cded266fc.png" alt="User" class="w-10 h-10 rounded-none border-2 border-black shadow-[2px_2px_0px_0px_#000]">
+                        <img src="@avatarSrc" 
+                             alt="@altText" 
+                             class="w-10 h-10 object-cover rounded-none border-2 border-black shadow-[2px_2px_0px_0px_#000]">
                     </div>
                 }
                 else

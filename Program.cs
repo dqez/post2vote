@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Authentication.Cookies;
+﻿using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.Google;
 using Microsoft.EntityFrameworkCore;
 using votegdgc.Data;
@@ -27,6 +28,9 @@ namespace votegdgc
                     options.ClientId = builder.Configuration["Authentication:Google:ClientId"];
                     options.ClientSecret = builder.Configuration["Authentication:Google:ClientSecret"];
 
+                    options.Scope.Add("profile");
+
+                    options.ClaimActions.MapJsonKey("urn:google:picture", "picture", "url");
                     //// Tùy chọn: Thêm scope để lấy thêm thông tin
                     //options.Scope.Add("profile");
                     //options.Scope.Add("email");

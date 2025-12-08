@@ -71,7 +71,7 @@ namespace votegdgc.Controllers
             await _context.SaveChangesAsync();
 
             TempData["Success"] = "Project created successfully!";
-            return RedirectToAction("Index", "Home");
+            return RedirectToAction("Vote", "Home");
         }
 
         // GET: /Projects/Details/5
@@ -108,7 +108,7 @@ namespace votegdgc.Controllers
             if (user.RemainingVotes <= 0)
             {
                 TempData["Error"] = "You have used all 5 votes!";
-                return RedirectToAction("Index", "Home");
+                return RedirectToAction("Vote", "Home");
             }
 
             var project = await _context.Projects.FindAsync(projectId);
@@ -119,7 +119,7 @@ namespace votegdgc.Controllers
             if (project.UserId == user.Id)
             {
                 TempData["Error"] = "You cannot vote for your own project!";
-                return RedirectToAction("Index", "Home");
+                return RedirectToAction("Vote", "Home");
             }
 
             // Check if already voted
@@ -129,7 +129,7 @@ namespace votegdgc.Controllers
             if (existingVote != null)
             {
                 TempData["Error"] = "You have already voted for this project!";
-                return RedirectToAction("Index", "Home");
+                return RedirectToAction("Vote", "Home");
             }
 
             // Create vote
@@ -143,7 +143,7 @@ namespace votegdgc.Controllers
             await _context.SaveChangesAsync();
 
             TempData["Success"] = $"Voted successfully! {user.RemainingVotes - 1} votes remaining.";
-            return RedirectToAction("Index", "Home");
+            return RedirectToAction("Vote", "Home");
         }
 
         // POST: /Projects/Unvote
@@ -162,14 +162,14 @@ namespace votegdgc.Controllers
             if (vote == null)
             {
                 TempData["Error"] = "Vote not found!";
-                return RedirectToAction("Index", "Home");
+                return RedirectToAction("Vote", "Home");
             }
 
             _context.Votes.Remove(vote);
             await _context.SaveChangesAsync();
 
             TempData["Success"] = $"Unvoted successfully! {user.RemainingVotes + 1} votes remaining.";
-            return RedirectToAction("Index", "Home");
+            return RedirectToAction("Vote", "Home");
         }
     }
 }
