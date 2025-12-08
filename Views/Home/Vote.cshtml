@@ -1,0 +1,127 @@
+@model IEnumerable<votegdgc.Models.Project>
+
+@{
+    ViewData["Title"] = "Vote";
+    var currentUser = ViewBag.CurrentUser as votegdgc.Models.User;
+    var votesLeft = currentUser?.RemainingVotes ?? 0;
+}
+
+<div>
+    <div class="flex flex-col md:flex-row justify-between items-center mb-8 gap-4">
+        <div class="flex items-center gap-4">
+            <h1 class="text-4xl font-black uppercase italic tracking-tighter">Gallery</h1>
+            @if (currentUser != null)
+            {
+                <span class="bg-gdg-blue text-white px-2 py-1 text-xs border-2 border-black font-bold uppercase inline-block shadow-[2px_2px_0px_0px_#000]">
+                    @votesLeft/5 votes left
+                </span>
+            }
+        </div>
+    </div>
+
+    @if (Model == null || !Model.Any())
+    {
+        <div class="border-2 border-black shadow-neo p-6 bg-white">
+            <p class="font-bold text-xl">No projects yet. Be the first to submit!</p>
+        </div>
+    }
+    else
+    {
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            @foreach (var project in Model)
+            {
+                var isOwner = currentUser != null && project.UserId == currentUser.Id;
+                var hasVoted = currentUser != null && project.Votes.Any(v => v.UserId == currentUser.Id);
+                var canVote = currentUser != null && !isOwner && !hasVoted && currentUser.RemainingVotes > 0;
+
+                <div class="border-2 border-black shadow-neo p-6 bg-white flex flex-col h-full hover:border-gdg-blue transition-colors duration-300">
+                    
+                    <div class="-mx-6 -mt-6 mb-4 border-b-4 border-black overflow-hidden">
+                        @if (!string.IsNullOrEmpty(project.ThumbnailLink))
+                        {
+                            <img src="@project.ThumbnailLink" 
+                                 alt="@project.Title thumbnail" 
+                                 class="w-full h-48 object-cover">
+                        }
+                    </div>
+                    
+                    <div class="flex justify-between items-start mb-4">
+                        <span class="bg-gdg-yellow text-black px-2 py-1 text-xs border-2 border-black font-bold uppercase inline-block shadow-[2px_2px_0px_0px_#000]">
+                            Votes: @project.VoteCount
+                        </span>
+                    </div>
+
+                    <h3 class="text-2xl font-black mb-2 leading-tight">@project.Title</h3>
+                    <p class="text-sm font-bold text-gray-500 mb-4">by @(project.User?.Name ?? "Unknown")</p>
+                    <p class="mb-4 text-gray-700 flex-grow line-clamp-3">@project.Description</p>
+
+                    @if (!string.IsNullOrEmpty(project.Prompt))
+                    {
+                        <div class="bg-gray-50 p-3 border-2 border-gray-200 mb-6 text-xs font-mono max-h-[150px] overflow-y-auto">
+                            <span class="font-bold text-gray-400 select-none">$ </span>@project.Prompt
+                        </div>
+                    }
+
+                    <div class="flex gap-3 mt-auto">
+                        @if (!string.IsNullOrEmpty(project.ProjectLink))
+                        {
+                            <a href="@project.ProjectLink" target="_blank" rel="noopener noreferrer" class="flex-1">
+                                <button class="relative inline-flex items-center justify-center font-bold border-2 border-black transition-all active:translate-x-[2px] active:translate-y-[2px] active:shadow-none disabled:opacity-50 disabled:cursor-not-allowed bg-white text-black shadow-neo hover:-translate-y-0.5 hover:shadow-[6px_6px_0px_0px_#000] px-6 py-3 text-base w-full text-sm">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-external-link w-4 h-4 mr-2"><path d="M15 3h6v6"></path><path d="M10 14 21 3"></path><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path></svg>
+                                    View
+                                </button>
+                            </a>
+                        }
+                        
+                        @if (currentUser != null)
+                        {
+                            if (isOwner)
+                            {
+                                <button disabled class="relative inline-flex items-center justify-center font-bold border-2 border-black transition-all active:translate-x-[2px] active:translate-y-[2px] active:shadow-none disabled:opacity-50 disabled:cursor-not-allowed bg-gray-200 text-gray-500 shadow-neo px-6 py-3 text-base flex-1">
+                                    Owner
+                                </button>
+                            }
+                            else if (hasVoted)
+                            {
+                                <form asp-controller="Projects" asp-action="Unvote" method="post" class="flex-1">
+                                    <input type="hidden" name="projectId" value="@project.Id" />
+                                    @Html.AntiForgeryToken()
+                                    <button type="submit" class="w-full relative inline-flex items-center justify-center font-bold border-2 border-black transition-all active:translate-x-[2px] active:translate-y-[2px] active:shadow-none disabled:opacity-50 disabled:cursor-not-allowed bg-gdg-red text-white shadow-neo hover:-translate-y-0.5 hover:shadow-[6px_6px_0px_0px_#000] px-6 py-3 text-base">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-x w-4 h-4 mr-2"><path d="M18 6 6 18"></path><path d="m6 6 12 12"></path></svg>
+                                        Unvote
+                                    </button>
+                                </form>
+                            }
+                            else if (canVote)
+                            {
+                                <form asp-controller="Projects" asp-action="Vote" method="post" class="flex-1">
+                                    <input type="hidden" name="projectId" value="@project.Id" />
+                                    @Html.AntiForgeryToken()
+                                    <button type="submit" class="w-full relative inline-flex items-center justify-center font-bold border-2 border-black transition-all active:translate-x-[2px] active:translate-y-[2px] active:shadow-none disabled:opacity-50 disabled:cursor-not-allowed bg-gdg-blue text-white shadow-neo hover:-translate-y-0.5 hover:shadow-[6px_6px_0px_0px_#000] px-6 py-3 text-base flex-1 ">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-heart w-4 h-4 mr-2 "><path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"></path></svg>
+                                        Vote
+                                    </button>
+                                </form>
+                            }
+                            else if (currentUser.RemainingVotes <= 0)
+                            {
+                                <button disabled class="relative inline-flex items-center justify-center font-bold border-2 border-black transition-all active:translate-x-[2px] active:translate-y-[2px] active:shadow-none disabled:opacity-50 disabled:cursor-not-allowed bg-gray-200 text-gray-500 shadow-neo px-6 py-3 text-base flex-1">
+                                    No Votes
+                                </button>
+                            }
+                        }
+                        else
+                        {
+                            <a asp-controller="Account" asp-action="Login" class="flex-1">
+                                <button class="w-full relative inline-flex items-center justify-center font-bold border-2 border-black transition-all active:translate-x-[2px] active:translate-y-[2px] active:shadow-none disabled:opacity-50 disabled:cursor-not-allowed bg-gdg-blue text-white shadow-neo hover:-translate-y-0.5 hover:shadow-[6px_6px_0px_0px_#000] px-6 py-3 text-base flex-1 ">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-heart w-4 h-4 mr-2 "><path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"></path></svg>
+                                    Vote
+                                </button>
+                            </a>
+                        }
+                    </div>
+                </div>
+            }
+        </div>
+    }
+</div>

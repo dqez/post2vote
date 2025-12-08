@@ -33,6 +33,13 @@ namespace votegdgc.Controllers
         // GET: /
         public async Task<IActionResult> Index()
         {
+            ViewBag.CurrentUser = await GetCurrentUserAsync();
+            return View();
+        }
+
+        // GET: /Home/Vote
+        public async Task<IActionResult> Vote()
+        {
             var projects = await _context.Projects
                 .Include(p => p.User)
                 .Include(p => p.Votes)
@@ -54,6 +61,8 @@ namespace votegdgc.Controllers
                 .OrderByDescending(p => p.Votes.Count)
                 .ThenByDescending(p => p.CreatedAt)
                 .ToListAsync();
+
+            ViewBag.CurrentUser = await GetCurrentUserAsync();
 
             return View(projects);
         }

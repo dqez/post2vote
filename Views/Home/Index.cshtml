@@ -1,94 +1,34 @@
-﻿@model IEnumerable<votegdgc.Models.Project>
-
-@{
-    ViewData["Title"] = "All Projects";
+﻿@{
+    ViewData["Title"] = "Home Page";
 }
 
-<div class="row mb-4">
-    <div class="col-md-12">
-        <h1>All Projects</h1>
-        <p class="lead">Vote for your favorite projects! Each user has 5 votes.</p>
+<div class="flex flex-col items-center justify-center min-h-[70vh] text-center space-y-8">
+    <div class="relative">
+        <div class="absolute inset-0 bg-gdg-yellow blur-xl opacity-50 rounded-full animate-pulse"></div>
+        <img src="./assets/GDSC_Icon.665f1462ba5cded266fc.png" alt="GDG Logo" class="w-32 h-32 relative z-10">
     </div>
-</div>
-
-<div class="row">
-    @if (Model == null || !Model.Any())
-    {
-        <div class="col-12">
-            <div class="alert alert-info">
-                No projects yet. Be the first to submit!
-            </div>
-        </div>
-    }
-    else
-    {
-        var currentUser = ViewBag.CurrentUser as votegdgc.Models.User;
-
-        @foreach (var project in Model)
-        {
-            var isOwner = currentUser != null && project.UserId == currentUser.Id;
-            var hasVoted = currentUser != null && project.Votes.Any(v => v.UserId == currentUser.Id);
-            var canVote = currentUser != null && !isOwner && !hasVoted && currentUser.RemainingVotes > 0;
-
-            <div class="col-md-4 mb-4">
-                <div class="card h-100">
-                    @if (!string.IsNullOrEmpty(project.ThumbnailLink))
-                    {
-                        <img src="@project.ThumbnailLink" class="card-img-top" alt="@project.Title" style="height: 200px; object-fit: cover;">
-                    }
-                    else
-                    {
-                        <div class="bg-secondary text-white d-flex align-items-center justify-content-center" style="height: 200px;">
-                            <span>No Image</span>
-                        </div>
-                    }
-                    <div class="card-body">
-                        <h5 class="card-title">@project.Title</h5>
-                        <p class="card-text">@project.Description</p>
-                        <div class="d-flex justify-content-between align-items-center">
-                            <small class="text-muted">
-                                by @project.User.Name
-                            </small>
-                            <span class="badge bg-primary">
-                                @project.VoteCount votes
-                            </span>
-                        </div>
-                    </div>
-                    <div class="card-footer">
-                        @if (currentUser != null)
-                        {
-                            if (isOwner)
-                            {
-                                <button class="btn btn-secondary w-100" disabled>Your Project</button>
-                            }
-                            else if (hasVoted)
-                            {
-                                <form asp-controller="Projects" asp-action="Unvote" method="post">
-                                    <input type="hidden" name="projectId" value="@project.Id" />
-                                    @Html.AntiForgeryToken()
-                                    <button type="submit" class="btn btn-danger w-100">Unvote</button>
-                                </form>
-                            }
-                            else if (canVote)
-                            {
-                                <form asp-controller="Projects" asp-action="Vote" method="post">
-                                    <input type="hidden" name="projectId" value="@project.Id" />
-                                    @Html.AntiForgeryToken()
-                                    <button type="submit" class="btn btn-success w-100">Vote</button>
-                                </form>
-                            }
-                            else if (currentUser.RemainingVotes <= 0)
-                            {
-                                <button class="btn btn-secondary w-100" disabled>No Votes Left</button>
-                            }
-                        }
-                        else
-                        {
-                            <a asp-controller="Account" asp-action="Login" class="btn btn-primary w-100">Login to Vote</a>
-                        }
-                    </div>
-                </div>
-            </div>
-        }
-    }
+    <h1 class="text-5xl md:text-7xl font-black tracking-tighter leading-none">
+        VIBE<br>
+        <span class="text-white bg-gdg-blue px-4 shadow-[8px_8px_0px_0px_#000]">CODING</span>
+    </h1>
+    <p class="text-xl md:text-2xl font-bold max-w-2xl text-gray-800">GDG Cloud Da Nang Devfest 2025</p>
+    <div class="p-6 border-4 border-black bg-white shadow-[8px_8px_0px_0px_#000] max-w-lg mx-auto transform rotate-1">
+        <p class="font-mono text-sm md:text-base font-bold">
+            Build something cool with <span class="text-gdg-blue">Gemini</span>.<br>
+            Share the prompt.<br>
+            Win the vibe check.
+        </p>
+    </div>
+    <div class="flex gap-4">
+        <a asp-controller="Home" asp-action="Vote">
+            <button class="relative inline-flex items-center justify-center font-bold border-2 border-black transition-all active:translate-x-[2px] active:translate-y-[2px] active:shadow-none disabled:opacity-50 disabled:cursor-not-allowed bg-gdg-blue text-white shadow-neo hover:-translate-y-0.5 hover:shadow-[6px_6px_0px_0px_#000] px-8 py-4 text-lg ">
+                View Gallery
+            </button>
+        </a>
+        <a asp-controller="Projects" asp-action="Create">
+            <button class="relative inline-flex items-center justify-center font-bold border-2 border-black transition-all active:translate-x-[2px] active:translate-y-[2px] active:shadow-none disabled:opacity-50 disabled:cursor-not-allowed bg-gdg-yellow text-black shadow-neo hover:-translate-y-0.5 hover:shadow-[6px_6px_0px_0px_#000] px-8 py-4 text-lg ">
+                Submit Project
+            </button>
+        </a>
+    </div>
 </div>

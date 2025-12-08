@@ -34,8 +34,9 @@ namespace votegdgc.Controllers
         // GET: /Projects/Create
         [Authorize]
         [HttpGet]
-        public IActionResult Create()
+        public async Task<IActionResult> Create()
         {
+            ViewBag.CurrentUser = await GetCurrentUserAsync();
             return View();
         }
 
