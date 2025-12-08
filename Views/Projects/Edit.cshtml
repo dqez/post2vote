@@ -1,0 +1,57 @@
+﻿@model votegdgc.Models.Project
+
+@{
+    ViewData["Title"] = "Edit Project";
+}
+
+<div class="row">
+    <div class="col-md-8 offset-md-2">
+        <h2>Edit Project</h2>
+
+        <form asp-action="Edit" method="post" class="mt-4">
+            @Html.AntiForgeryToken()
+            <input type="hidden" asp-for="Id" />
+
+            <div class="mb-3">
+                <label asp-for="Title" class="form-label">Project Title</label>
+                <input asp-for="Title" class="form-control" required />
+                <span asp-validation-for="Title" class="text-danger"></span>
+            </div>
+
+            <div class="mb-3">
+                <label asp-for="Description" class="form-label">Description</label>
+                <textarea asp-for="Description" class="form-control" rows="4" required></textarea>
+                <span asp-validation-for="Description" class="text-danger"></span>
+            </div>
+
+            <div class="mb-3">
+                <label asp-for="Prompt" class="form-label">AI Prompt Used</label>
+                <textarea asp-for="Prompt" class="form-control" rows="3" required></textarea>
+                <span asp-validation-for="Prompt" class="text-danger"></span>
+            </div>
+
+            <div class="mb-3">
+                <label asp-for="ProjectLink" class="form-label">Project Link</label>
+                <input asp-for="ProjectLink" type="url" class="form-control" required />
+                <span asp-validation-for="ProjectLink" class="text-danger"></span>
+            </div>
+
+            <div class="mb-3">
+                <label asp-for="ThumbnailLink" class="form-label">Thumbnail URL</label>
+                <input asp-for="ThumbnailLink" type="url" class="form-control" />
+                <span asp-validation-for="ThumbnailLink" class="text-danger"></span>
+            </div>
+
+            <div class="d-grid gap-2">
+                <button type="submit" class="btn btn-primary">Save Changes</button>
+                <a asp-action="Details" asp-route-id="@Model.Id" class="btn btn-secondary">Cancel</a>
+            </div>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

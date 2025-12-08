@@ -1,0 +1,94 @@
+﻿@model IEnumerable<votegdgc.Models.Project>
+
+@{
+    ViewData["Title"] = "All Projects";
+}
+
+<div class="row mb-4">
+    <div class="col-md-12">
+        <h1>All Projects</h1>
+        <p class="lead">Vote for your favorite projects! Each user has 5 votes.</p>
+    </div>
+</div>
+
+<div class="row">
+    @if (Model == null || !Model.Any())
+    {
+        <div class="col-12">
+            <div class="alert alert-info">
+                No projects yet. Be the first to submit!
+            </div>
+        </div>
+    }
+    else
+    {
+        var currentUser = ViewBag.CurrentUser as votegdgc.Models.User;
+
+        @foreach (var project in Model)
+        {
+            var isOwner = currentUser != null && project.UserId == currentUser.Id;
+            var hasVoted = currentUser != null && project.Votes.Any(v => v.UserId == currentUser.Id);
+            var canVote = currentUser != null && !isOwner && !hasVoted && currentUser.RemainingVotes > 0;
+
+            <div class="col-md-4 mb-4">
+                <div class="card h-100">
+                    @if (!string.IsNullOrEmpty(project.ThumbnailLink))
+                    {
+                        <img src="@project.ThumbnailLink" class="card-img-top" alt="@project.Title" style="height: 200px; object-fit: cover;">
+                    }
+                    else
+                    {
+                        <div class="bg-secondary text-white d-flex align-items-center justify-content-center" style="height: 200px;">
+                            <span>No Image</span>
+                        </div>
+                    }
+                    <div class="card-body">
+                        <h5 class="card-title">@project.Title</h5>
+                        <p class="card-text">@project.Description</p>
+                        <div class="d-flex justify-content-between align-items-center">
+                            <small class="text-muted">
+                                by @project.User.Name
+                            </small>
+                            <span class="badge bg-primary">
+                                @project.VoteCount votes
+                            </span>
+                        </div>
+                    </div>
+                    <div class="card-footer">
+                        @if (currentUser != null)
+                        {
+                            if (isOwner)
+                            {
+                                <button class="btn btn-secondary w-100" disabled>Your Project</button>
+                            }
+                            else if (hasVoted)
+                            {
+                                <form asp-controller="Projects" asp-action="Unvote" method="post">
+                                    <input type="hidden" name="projectId" value="@project.Id" />
+                                    @Html.AntiForgeryToken()
+                                    <button type="submit" class="btn btn-danger w-100">Unvote</button>
+                                </form>
+                            }
+                            else if (canVote)
+                            {
+                                <form asp-controller="Projects" asp-action="Vote" method="post">
+                                    <input type="hidden" name="projectId" value="@project.Id" />
+                                    @Html.AntiForgeryToken()
+                                    <button type="submit" class="btn btn-success w-100">Vote</button>
+                                </form>
+                            }
+                            else if (currentUser.RemainingVotes <= 0)
+                            {
+                                <button class="btn btn-secondary w-100" disabled>No Votes Left</button>
+                            }
+                        }
+                        else
+                        {
+                            <a asp-controller="Account" asp-action="Login" class="btn btn-primary w-100">Login to Vote</a>
+                        }
+                    </div>
+                </div>
+            </div>
+        }
+    }
+</div>
