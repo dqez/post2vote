@@ -44,5 +44,18 @@ namespace votegdgc.Controllers
 
             return View(projects);
         }
+
+        // GET: /Home/Leaderboard
+        public async Task<IActionResult> Leaderboard()
+        {
+            var projects = await _context.Projects
+                .Include(p => p.User)
+                .Include(p => p.Votes)
+                .OrderByDescending(p => p.Votes.Count)
+                .ThenByDescending(p => p.CreatedAt)
+                .ToListAsync();
+
+            return View(projects);
+        }
     }
 }

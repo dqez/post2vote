@@ -1,0 +1,89 @@
+@model IEnumerable<votegdgc.Models.Project>
+
+@{
+    ViewData["Title"] = "Leaderboard";
+    int rank = 1;
+}
+
+<div class="container">
+    <div class="text-center mb-5">
+        <h1 class="display-4">🏆 Project Leaderboard</h1>
+        <p class="lead">Top rated projects by the community</p>
+    </div>
+
+    <div class="card shadow-sm">
+        <div class="card-body p-0">
+            <div class="table-responsive">
+                <table class="table table-hover table-striped mb-0">
+                    <thead class="table-dark">
+                        <tr>
+                            <th scope="col" class="text-center" style="width: 80px;">Rank</th>
+                            <th scope="col">Project</th>
+                            <th scope="col">Author</th>
+                            <th scope="col" class="text-center">Votes</th>
+                            <th scope="col" class="text-end">Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var project in Model)
+                        {
+                            <tr>
+                                <td class="text-center align-middle">
+                                    @if (rank == 1)
+                                    {
+                                        <span class="fs-4">🥇</span>
+                                    }
+                                    else if (rank == 2)
+                                    {
+                                        <span class="fs-4">🥈</span>
+                                    }
+                                    else if (rank == 3)
+                                    {
+                                        <span class="fs-4">🥉</span>
+                                    }
+                                    else
+                                    {
+                                        <span class="fw-bold text-muted">#@rank</span>
+                                    }
+                                </td>
+                                <td class="align-middle">
+                                    <div class="d-flex align-items-center">
+                                        @if (!string.IsNullOrEmpty(project.ThumbnailLink))
+                                        {
+                                            <img src="@project.ThumbnailLink" alt="@project.Title" class="rounded me-3" style="width: 50px; height: 50px; object-fit: cover;">
+                                        }
+                                        else
+                                        {
+                                            <div class="bg-secondary rounded me-3 d-flex align-items-center justify-content-center text-white" style="width: 50px; height: 50px;">
+                                                <small>N/A</small>
+                                            </div>
+                                        }
+                                        <div>
+                                            <h5 class="mb-0">@project.Title</h5>
+                                            <small class="text-muted text-truncate d-inline-block" style="max-width: 300px;">@project.Description</small>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td class="align-middle">
+                                    @project.User.Name
+                                </td>
+                                <td class="text-center align-middle">
+                                    <span class="badge bg-primary rounded-pill fs-6">@project.VoteCount</span>
+                                </td>
+                                <td class="text-end align-middle">
+                                    @if (!string.IsNullOrEmpty(project.ProjectLink))
+                                    {
+                                        <a href="@project.ProjectLink" target="_blank" class="btn btn-sm btn-outline-primary">
+                                            Visit Project
+                                        </a>
+                                    }
+                                </td>
+                            </tr>
+                            rank++;
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
