@@ -20,15 +20,15 @@
         </p>
     </div>
     <div class="flex gap-4">
-        <a asp-controller="Home" asp-action="Vote">
-            <button class="relative inline-flex items-center justify-center font-bold border-2 border-black transition-all active:translate-x-[2px] active:translate-y-[2px] active:shadow-none disabled:opacity-50 disabled:cursor-not-allowed bg-gdg-blue text-white shadow-neo hover:-translate-y-0.5 hover:shadow-[6px_6px_0px_0px_#000] px-8 py-4 text-lg ">
-                View Gallery
-            </button>
-        </a>
-        <a asp-controller="Projects" asp-action="Create">
-            <button class="relative inline-flex items-center justify-center font-bold border-2 border-black transition-all active:translate-x-[2px] active:translate-y-[2px] active:shadow-none disabled:opacity-50 disabled:cursor-not-allowed bg-gdg-yellow text-black shadow-neo hover:-translate-y-0.5 hover:shadow-[6px_6px_0px_0px_#000] px-8 py-4 text-lg ">
-                Submit Project
-            </button>
-        </a>
+        <neo-button href="@Url.Action("Vote", "Home")" 
+                   variant="primary" 
+                   size="lg">
+            View Gallery
+        </neo-button>
+        <neo-button href="@Url.Action("Create", "Projects")" 
+                   variant="secondary" 
+                   size="lg">
+            Submit Project
+        </neo-button>
     </div>
 </div>

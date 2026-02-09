@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using System.Security.Claims;
 using votegdgc.Data;
 using votegdgc.Models;
+using votegdgc.ViewModels;
 
 namespace votegdgc.Controllers
 {
@@ -47,9 +48,17 @@ namespace votegdgc.Controllers
                 .ThenByDescending(p => p.CreatedAt)
                 .ToListAsync();
 
-            ViewBag.CurrentUser = await GetCurrentUserAsync();
+            var currentUser = await GetCurrentUserAsync();
+            
+            var viewModel = new VotePageViewModel
+            {
+                Projects = projects,
+                CurrentUser = currentUser
+            };
 
-            return View(projects);
+            ViewBag.CurrentUser = currentUser;
+
+            return View(viewModel);
         }
 
         // GET: /Home/Leaderboard
@@ -62,9 +71,17 @@ namespace votegdgc.Controllers
                 .ThenByDescending(p => p.CreatedAt)
                 .ToListAsync();
 
-            ViewBag.CurrentUser = await GetCurrentUserAsync();
+            var currentUser = await GetCurrentUserAsync();
+            
+            var viewModel = new LeaderboardViewModel
+            {
+                Projects = projects,
+                CurrentUser = currentUser
+            };
 
-            return View(projects);
+            ViewBag.CurrentUser = currentUser;
+
+            return View(viewModel);
         }
     }
 }
