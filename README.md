@@ -1,22 +1,35 @@
-# VIBE CODING - GDG Cloud Da Nang Devfest 2025
+# VIBE CODING - GDG Cloud Da Nang Devfest 2025  <img src="./wwwroot/assets/GDSC_Icon.665f1462ba5cded266fc.png" alt="GDG Logo" width="40">
+
 
 A voting platform for GDG Cloud Da Nang Devfest 2025 where developers showcase their Gemini AI projects and receive votes from the community.
 
-![GDG Logo](./wwwroot/assets/GDSC_Icon.665f1462ba5cded266fc.png)
+<div align="center">
+</div>
 
 ## Screenshots
 
-### Home Page
-![Home Page](./wwwroot/assets/home.png)
-
-### Vote Gallery
-![Vote Gallery](./wwwroot/assets/vote.png)
-
-### Submit Project
-![Submit Project](./wwwroot/assets/submit.png)
-
-### Leaderboard
-![Leaderboard](./wwwroot/assets/leaderboard.png)
+<table>
+  <tr>
+    <td width="50%">
+      <h3 align="center">Home Page</h3>
+      <img src="./wwwroot/assets/home.png" alt="Home Page" width="100%">
+    </td>
+    <td width="50%">
+      <h3 align="center">Vote Gallery</h3>
+      <img src="./wwwroot/assets/vote.png" alt="Vote Gallery" width="100%">
+    </td>
+  </tr>
+  <tr>
+    <td width="50%">
+      <h3 align="center">Submit Project</h3>
+      <img src="./wwwroot/assets/submit.png" alt="Submit Project" width="100%">
+    </td>
+    <td width="50%">
+      <h3 align="center">Leaderboard</h3>
+      <img src="./wwwroot/assets/leaderboard.png" alt="Leaderboard" width="100%">
+    </td>
+  </tr>
+</table>
 
 ## Key Features
 
