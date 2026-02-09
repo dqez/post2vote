@@ -1,7 +1,8 @@
-# VIBE CODING - GDG Cloud Da Nang Devfest 2025  <img src="./wwwroot/assets/GDSC_Icon.665f1462ba5cded266fc.png" alt="GDG Logo" width="40">
+# Post 2 Vote 🌠
 
+A versatile voting platform where developers can showcase their projects and receive votes from the community.
 
-A voting platform for GDG Cloud Da Nang Devfest 2025 where developers showcase their Gemini AI projects and receive votes from the community.
+> **Note:** This project is inspired by and cloned from [vote.gdgc.dev](https://vote.gdgc.dev), the original voting platform created for GDG Cloud Da Nang Devfest 2025.
 
 <div align="center">
 </div>
@@ -186,14 +187,18 @@ Contributions are welcome! Please feel free to submit a Pull Request.
 
 ## License
 
-This project was created for GDG Cloud Da Nang Devfest 2025.
+This project is open source and available for community use.
 
-## Credits
+## Credits & Acknowledgments
 
+This project is inspired by and cloned from [vote.gdgc.dev](https://vote.gdgc.dev), the original voting platform created for GDG Cloud Da Nang Devfest 2025.
+
+Special thanks to:
+- **Original creators at vote.gdgc.dev** - For the amazing concept and implementation
 - GDG Cloud Da Nang community
 - Google Developer Groups
 - Tailwind CSS
 
 ---
 
-Built for GDG Cloud Da Nang Devfest 2025
+**Post2Vote** - A community voting platform

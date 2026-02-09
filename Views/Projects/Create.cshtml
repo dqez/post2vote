@@ -8,7 +8,7 @@
     <div class="max-w-2xl mx-auto">
         <div class="mb-8 text-center">
             <h1 class="text-4xl md:text-5xl font-black mb-4 bg-gdg-blue text-white inline-block px-4 py-2 border-4 border-black shadow-neo-lg transform -rotate-1">SUBMIT PROJECT</h1>
-            <p class="text-lg font-bold mt-4">Show us what you built with Gemini.</p>
+            <p class="text-lg font-bold mt-4">Share your amazing project with the community.</p>
         </div>
         <div class="border-2 border-black shadow-neo p-6 bg-white relative bg-white">
             <form asp-action="Create" method="post">
@@ -16,18 +16,18 @@
 
                 <div class="mb-4">
                     <label asp-for="Title" class="block mb-2 font-bold text-sm uppercase tracking-wider">Project Title</label>
-                    <input asp-for="Title" class="w-full border-2 border-black p-3 outline-none focus:shadow-neo transition-all bg-white placeholder:text-gray-400" placeholder="e.g. Vibe Generator 3000" />
+                    <input asp-for="Title" class="w-full border-2 border-black p-3 outline-none focus:shadow-neo transition-all bg-white placeholder:text-gray-400" placeholder="e.g. My Awesome Project" />
                     <span asp-validation-for="Title" class="text-danger text-sm font-bold"></span>
                 </div>
 
                 <div class="mb-4">
                     <label asp-for="Description" class="block mb-2 font-bold text-sm uppercase tracking-wider">Description</label>
-                    <textarea asp-for="Description" class="w-full border-2 border-black p-3 outline-none focus:shadow-neo transition-all bg-white placeholder:text-gray-400 min-h-[100px]" placeholder="What does it do? How does it vibe?"></textarea>
+                    <textarea asp-for="Description" class="w-full border-2 border-black p-3 outline-none focus:shadow-neo transition-all bg-white placeholder:text-gray-400 min-h-[100px]" placeholder="What does your project do? What makes it special?"></textarea>
                     <span asp-validation-for="Description" class="text-danger text-sm font-bold"></span>
                 </div>
 
                 <div class="mb-4">
-                    <label asp-for="Prompt" class="block mb-2 font-bold text-sm uppercase tracking-wider">The Vibe Prompt</label>
+                    <label asp-for="Prompt" class="block mb-2 font-bold text-sm uppercase tracking-wider">Project Details / Prompt</label>
                     <textarea asp-for="Prompt" class="w-full border-2 border-black p-3 outline-none focus:shadow-neo transition-all bg-white placeholder:text-gray-400 min-h-[100px] font-mono text-sm bg-yellow-50" placeholder="Share the prompt you used..."></textarea>
                     <span asp-validation-for="Prompt" class="text-danger text-sm font-bold"></span>
                 </div>
@@ -40,7 +40,7 @@
 
                 <div class="mb-4">
                     <div class="mb-4">
-                        <label asp-for="ThumbnailLink" class="block mb-2 font-bold text-sm uppercase tracking-wider">AI generated thumbnail image about your project</label>
+                        <label asp-for="ThumbnailLink" class="block mb-2 font-bold text-sm uppercase tracking-wider">Project Thumbnail Image</label>
                         <input asp-for="ThumbnailLink" type="url" class="w-full border-2 border-black p-3 outline-none focus:shadow-neo transition-all bg-white placeholder:text-gray-400" placeholder="https://i.ibb.co/..." />
                         <span asp-validation-for="ThumbnailLink" class="text-danger text-sm font-bold"></span>
                     </div>
