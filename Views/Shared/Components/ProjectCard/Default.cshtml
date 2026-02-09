@@ -1,0 +1,98 @@
+@model votegdgc.ViewModels.ProjectCardViewModel
+
+<neo-card hoverable="true" class="flex flex-col h-full">
+    @* Project Thumbnail *@
+    <div class="-mx-6 -mt-6 mb-4 border-b-4 border-black overflow-hidden">
+        @if (!string.IsNullOrEmpty(Model.Project.ThumbnailLink))
+        {
+            <img src="@Model.Project.ThumbnailLink" 
+                 alt="@Model.Project.Title thumbnail" 
+                 class="w-full h-48 object-cover">
+        }
+    </div>
+    
+    @* Vote Count Badge *@
+    <div class="flex justify-between items-start mb-4">
+        <neo-badge variant="yellow">Votes: @Model.Project.VoteCount</neo-badge>
+    </div>
+
+    @* Project Info *@
+    <h3 class="text-2xl font-black mb-2 leading-tight">@Model.Project.Title</h3>
+    <p class="text-sm font-bold text-gray-500 mb-4">by @(Model.Project.User?.Name ?? "Unknown")</p>
+    <p class="mb-4 text-gray-700 flex-grow line-clamp-3">@Model.Project.Description</p>
+
+    @* Prompt Display *@
+    @if (!string.IsNullOrEmpty(Model.Project.Prompt))
+    {
+        <div class="bg-gray-50 p-3 border-2 border-gray-200 mb-6 text-xs font-mono max-h-[150px] overflow-y-auto">
+            <span class="font-bold text-gray-400 select-none">$ </span>@Model.Project.Prompt
+        </div>
+    }
+
+    @* Action Buttons *@
+    <div class="flex gap-3 mt-auto">
+        @if (!string.IsNullOrEmpty(Model.Project.ProjectLink))
+        {
+            <neo-button href="@Model.Project.ProjectLink" 
+                       variant="white" 
+                       icon="external-link"
+                       full-width="true"
+                       class="flex-1">
+                View
+            </neo-button>
+        }
+        
+        @if (Model.CurrentUser != null)
+        {
+            @if (Model.IsOwner)
+            {
+                <neo-button variant="disabled" disabled="true" class="flex-1">
+                    Owner
+                </neo-button>
+            }
+            else if (Model.HasVoted)
+            {
+                <form asp-controller="Projects" asp-action="Unvote" method="post" class="flex-1">
+                    <input type="hidden" name="projectId" value="@Model.Project.Id" />
+                    @Html.AntiForgeryToken()
+                    <neo-button type="submit" 
+                               variant="danger" 
+                               icon="x"
+                               full-width="true">
+                        Unvote
+                    </neo-button>
+                </form>
+            }
+            else if (Model.CanVote)
+            {
+                <form asp-controller="Projects" asp-action="Vote" method="post" class="flex-1">
+                    <input type="hidden" name="projectId" value="@Model.Project.Id" />
+                    @Html.AntiForgeryToken()
+                    <neo-button type="submit" 
+                               variant="primary" 
+                               icon="heart"
+                               full-width="true"
+                               class="flex-1">
+                        Vote
+                    </neo-button>
+                </form>
+            }
+            else if (Model.NoVotesLeft)
+            {
+                <neo-button variant="disabled" disabled="true" class="flex-1">
+                    No Votes
+                </neo-button>
+            }
+        }
+        else
+        {
+            <neo-button href="@Url.Action("Login", "Account")" 
+                       variant="primary" 
+                       icon="heart"
+                       full-width="true"
+                       class="flex-1">
+                Vote
+            </neo-button>
+        }
+    </div>
+</neo-card>

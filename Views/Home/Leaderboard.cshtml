@@ -1,8 +1,7 @@
-@model IEnumerable<votegdgc.Models.Project>
+@model LeaderboardViewModel
 
 @{
     ViewData["Title"] = "Leaderboard";
-    int rank = 1;
 }
 
 <div class="max-w-4xl mx-auto px-4 md:px-8 py-6">
@@ -16,48 +15,9 @@
     </div>
 
     <div class="space-y-4">
-        @foreach (var project in Model)
+        @foreach (var item in Model.GetLeaderboardItems())
         {
-            string cardClass = "relative flex items-center gap-4 p-4 border-b-4 border-r-4 border-l-2 border-t-2 transition-all";
-            string rankIcon = "";
-            
-            if (rank == 1)
-            {
-                cardClass += " border-gdg-yellow bg-gdg-yellow/10 scale-105 z-10";
-                rankIcon = @"<svg xmlns=""http://www.w3.org/2000/svg"" width=""24"" height=""24"" viewBox=""0 0 24 24"" fill=""none"" stroke=""currentColor"" stroke-width=""2"" stroke-linecap=""round"" stroke-linejoin=""round"" class=""lucide lucide-crown w-6 h-6 text-gdg-yellow fill-black""><path d=""m2 4 3 12h14l3-12-6 7-4-7-4 7-6-7zm3 16h14""></path></svg>";
-            }
-            else if (rank == 2)
-            {
-                cardClass += " border-gray-400 bg-gray-100";
-                rankIcon = @"<svg xmlns=""http://www.w3.org/2000/svg"" width=""24"" height=""24"" viewBox=""0 0 24 24"" fill=""none"" stroke=""currentColor"" stroke-width=""2"" stroke-linecap=""round"" stroke-linejoin=""round"" class=""lucide lucide-medal w-6 h-6 text-gray-500""><path d=""M7.21 15 2.66 7.14a2 2 0 0 1 .13-2.2L4.4 2.8A2 2 0 0 1 6 2h12a2 2 0 0 1 1.6.8l1.6 2.14a2 2 0 0 1 .14 2.2L16.79 15""></path><path d=""M11 12 5.12 2.2""></path><path d=""m13 12 5.88-9.8""></path><path d=""M8 7h8""></path><circle cx=""12"" cy=""17"" r=""5""></circle><path d=""M12 18v-2h-.5""></path></svg>";
-            }
-            else if (rank == 3)
-            {
-                cardClass += " border-orange-400 bg-orange-50";
-                rankIcon = @"<svg xmlns=""http://www.w3.org/2000/svg"" width=""24"" height=""24"" viewBox=""0 0 24 24"" fill=""none"" stroke=""currentColor"" stroke-width=""2"" stroke-linecap=""round"" stroke-linejoin=""round"" class=""lucide lucide-medal w-6 h-6 text-orange-600""><path d=""M7.21 15 2.66 7.14a2 2 0 0 1 .13-2.2L4.4 2.8A2 2 0 0 1 6 2h12a2 2 0 0 1 1.6.8l1.6 2.14a2 2 0 0 1 .14 2.2L16.79 15""></path><path d=""M11 12 5.12 2.2""></path><path d=""m13 12 5.88-9.8""></path><path d=""M8 7h8""></path><circle cx=""12"" cy=""17"" r=""5""></circle><path d=""M12 18v-2h-.5""></path></svg>";
-            }
-            else
-            {
-                cardClass += " border-black bg-white";
-                rankIcon = $"<span class=\"font-black text-xl\">{rank}</span>";
-            }
-
-            <div class="mb-6">
-                <div class="@cardClass">
-                    <div class="flex-shrink-0 w-12 h-12 flex items-center justify-center border-2 border-black bg-white shadow-[2px_2px_0px_0px_#000]">
-                        @Html.Raw(rankIcon)
-                    </div>
-                    <div class="flex-grow min-w-0">
-                        <h3 class="text-xl font-black truncate">@project.Title</h3>
-                        <p class="text-sm font-bold text-gray-500 truncate">by @(project.User?.Name ?? "Unknown")</p>
-                    </div>
-                    <div class="flex-shrink-0 text-right">
-                        <div class="text-2xl font-black text-gdg-blue">@project.VoteCount</div>
-                        <div class="text-xs font-bold uppercase tracking-wide">Votes</div>
-                    </div>
-                </div>
-            </div>
-            rank++;
+            @await Component.InvokeAsync("LeaderboardItem", item)
         }
     </div>
 </div>

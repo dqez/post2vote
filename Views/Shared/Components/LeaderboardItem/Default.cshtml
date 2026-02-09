@@ -1,0 +1,17 @@
+@model votegdgc.ViewModels.LeaderboardItemViewModel
+
+<div class="mb-6">
+    <div class="@Model.GetCardClass()">
+        <div class="flex-shrink-0 w-12 h-12 flex items-center justify-center border-2 border-black bg-white shadow-[2px_2px_0px_0px_#000]">
+            @Html.Raw(Model.GetRankIconSvg())
+        </div>
+        <div class="flex-grow min-w-0">
+            <h3 class="text-xl font-black truncate">@Model.Project.Title</h3>
+            <p class="text-sm font-bold text-gray-500 truncate">by @(Model.Project.User?.Name ?? "Unknown")</p>
+        </div>
+        <div class="flex-shrink-0 text-right">
+            <div class="text-2xl font-black text-gdg-blue">@Model.Project.VoteCount</div>
+            <div class="text-xs font-bold uppercase tracking-wide">Votes</div>
+        </div>
+    </div>
+</div>
